@@ -7,11 +7,11 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <title>Book Diary Analysis</title>
 </head>
-<body style="background-color:rgb(235, 235, 235);">
+<body style="background-color:rgb(245, 245, 245);">
 
  <h1 style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Book Diary Analysis</h1>
 
-<div id='table_of_books' style="width:100%;"></div>
+<div id='table_of_books' style="width:100%; height:600px"></div>
 
 <div id='monthly' style="width:100%;"></div>
 
@@ -19,9 +19,11 @@
 
 <div id="plot_books_per_year" style="width:50%; float: left;"></div>
 
-<div id="language_per_year" style="width:50%; float: left;"></div>
+<div id="language_per_year" style="width:33%; float: left;"></div>
 
-<div id="kind_per_year" style="width:50%; float: left;"></div>
+<div id="kind_per_year" style="width:33%; float: left;"></div>
+  
+<div id="book_age_hist" style="width:33%; float: left;"></div>
 
 <script>
 dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFywhzMr4qzJHZjCdzn3bx9Z3BrYHVKniHumuovCTF9iy28kRu7M3huznQt-seQI2/pub?gid=0&single=true&output=csv").then(df => {
@@ -42,10 +44,10 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
      line: { color: "black", width: 1 },
   }
       var layout = {
-      paper_bgcolor:"rgb(235, 235, 235)",
-      plot_bgcolor:"rgb(235, 235, 235)",
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
       };
-  sub_df.plot("table_of_books").table({ header_style: header_style, cell_style: cell_style, layout: layout })
+  sub_df.plot("table_of_books").table({ header_style: header_style, cell_style: cell_style, layout: layout})
   }).catch(err => {console.log(err);})
 </script>
 
@@ -73,7 +75,7 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     let month_counts = [];
     let num_books = df.shape[0]
     var mf;
-    for (mf = earliest; mf < latest + 1/12; mf = mf + 1/12) {
+    for (mf = earliest; mf < latest; mf = mf + 1/12) {
       all_months.push(mf);
       let this_month = 0
       var i;
@@ -104,9 +106,9 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     let rolling = [];
     let rollingx = [];
     var j;
-    for (j = 0; j < num_mfs - 6; j++) {
-      rolling.push(average(month_counts.slice(j, j+6)));
-      rollingx.push((all_months[j+3] + all_months[j+4]) / 2);
+    for (j = 0; j < num_mfs - 12; j++) {
+      rolling.push(average(month_counts.slice(j, j+12)));
+      rollingx.push((all_months[j+6] + all_months[j+7]) / 2);
     };
     
     var trace_monthly = {
@@ -142,8 +144,8 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     
     var layout = {
       title: 'Books Read per Month',
-      paper_bgcolor:"rgb(235, 235, 235)",
-      plot_bgcolor:"rgb(235, 235, 235)",
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
       hovermode: false,
       xaxis: {
         title: 'Month',
@@ -196,8 +198,8 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     
     var layout = {
       title: 'Top 20 Authors',
-      paper_bgcolor:"rgb(235, 235, 235)",
-      plot_bgcolor:"rgb(235, 235, 235)",
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
       xaxis: {
         title: 'Total Count',
         showline: true},
@@ -219,8 +221,8 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     let max_count = year_counts['Title_count'].max()
     var layout = {
       title: 'Books Read per Year',
-      paper_bgcolor:"rgb(235, 235, 235)",
-      plot_bgcolor:"rgb(235, 235, 235)",
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
       xaxis: {
         title: 'Year',
         showline: true,
@@ -303,8 +305,8 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
       };
       var layout = {
         title: 'Languages Read per Year',
-        paper_bgcolor:"rgb(235, 235, 235)",
-        plot_bgcolor:"rgb(235, 235, 235)",
+        paper_bgcolor:"rgb(245, 245, 245)",
+        plot_bgcolor:"rgb(245, 245, 245)",
         xaxis: {
           title: 'Year',
           showline: true,
@@ -414,8 +416,8 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     };
     var layout = {
       title: 'Type Read per Year',
-      paper_bgcolor:"rgb(235, 235, 235)",
-      plot_bgcolor:"rgb(235, 235, 235)",
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
       xaxis: {
         title: 'Year',
         showline: true,
@@ -429,6 +431,29 @@ dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFyw
     };
     
     Plotly.newPlot('kind_per_year', [trace_nv, trace_co, trace_py, trace_ss, trace_nf], layout);
+  }).catch(err => {console.log(err);})
+</script>
+  
+<script>
+  dfd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS8ENPko3-Z_B5hFywhzMr4qzJHZjCdzn3bx9Z3BrYHVKniHumuovCTF9iy28kRu7M3huznQt-seQI2/pub?gid=0&single=true&output=csv").then(df => {
+    let x = df["First Published"];
+    let minx = df["First Published"].min();
+    let maxx = df["First Published"].max();
+    let nbins = Math.ceil((maxx - minx)/10);
+    var trace = {
+        x: x['data'],
+        type: 'histogram',
+        marker: {color: 'rgb(207, 128, 33)', line: {color: "black", width: 0.5}},
+        nbinsx: nbins
+    };
+    var layout = {
+      title: 'When Were Books Published?',
+      paper_bgcolor:"rgb(245, 245, 245)",
+      plot_bgcolor:"rgb(245, 245, 245)",
+      xaxis: {
+        title: 'Year Published',
+        showline: true},};
+    Plotly.newPlot('book_age_hist', [trace], layout);
   }).catch(err => {console.log(err);})
 </script>
 
